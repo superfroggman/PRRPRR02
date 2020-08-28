@@ -31,6 +31,8 @@ namespace HelloWorld
             {
                 Console.WriteLine("Dålig ålder!");
             }
+
+            Console.ReadKey();
         }
     }
 }

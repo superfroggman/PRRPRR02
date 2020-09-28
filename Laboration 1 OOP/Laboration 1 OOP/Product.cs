@@ -8,7 +8,7 @@ namespace Laboration_1_OOP
     {
         public string _name;
         public int _cost;
-        public int _amount;
+        public int _amount = 0;
 
         public Product(string name, int cost)
         {

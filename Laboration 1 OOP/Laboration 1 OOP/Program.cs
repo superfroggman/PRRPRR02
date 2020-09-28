@@ -75,8 +75,6 @@ namespace Laboration_1_OOP
 
             Customer customer = _customers[inputInt - 1];
 
-            Console.WriteLine(customer._name);
-
             while (true)
             {
                 Console.WriteLine("\n1: Select product\n2: View cart\n0: Back");
@@ -89,7 +87,7 @@ namespace Laboration_1_OOP
                         SelectProduct(customer);
                         break;
                     case 2:
-                        ViewCart();
+                        ViewCart(customer);
                         break;
                     case 0:
                         return;
@@ -120,19 +118,37 @@ namespace Laboration_1_OOP
 
             Product product = _products[inputInt - 1];
 
-            Console.WriteLine(product._name);
-
             Console.WriteLine("Amount?");
 
-            int amount = getIntInput();
+
+            int amount;
+            while (true){
+                amount = getIntInput();
+                if (amount > 0) break;
+                Console.WriteLine("Bad amount");
+            }
+
+            product._amount = amount;
 
             customer._products.Add(product);
         }
 
 
-        static void ViewCart()
+        static void ViewCart(Customer customer)
         {
+            Console.WriteLine("\nProducts:");
 
+            int cost = 0;
+
+            for (int i = 0; i < customer._products.Count; i++)
+            {
+                Product product = customer._products[i];
+                Console.WriteLine(product._amount + "st: " + product._name);
+
+                cost += product._cost * product._amount;
+            }
+
+            Console.WriteLine("Total cost: " + cost + "kr");
         }
 
         //Default: -1

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Laboration_1_OOP
 {
-    class Product
+    class Product : ICloneable
     {
         public string _name;
         public int _cost;
@@ -14,6 +14,11 @@ namespace Laboration_1_OOP
         {
             _name = name;
             _cost = cost;
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }

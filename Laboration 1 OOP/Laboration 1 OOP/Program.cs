@@ -116,7 +116,7 @@ namespace Laboration_1_OOP
                 return;
             }
 
-            Product product = _products[inputInt - 1];
+            Product product = (Product)_products[inputInt - 1].Clone();
 
             Console.WriteLine("Amount?");
 

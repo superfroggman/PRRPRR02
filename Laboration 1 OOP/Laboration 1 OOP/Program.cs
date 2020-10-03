@@ -28,9 +28,7 @@ namespace Laboration_1_OOP
             {
                 Console.WriteLine("\n1: Create customer\n2: Select customer\n0: Exit");
 
-                int inputInt = getIntInput();
-
-                switch (inputInt)
+                switch (GetIntInput())
                 {
                     case 1:
                         CreateCustomer();
@@ -50,7 +48,16 @@ namespace Laboration_1_OOP
         {
             Console.WriteLine("\nName?");
 
-            string name = Console.ReadLine();
+            string name;
+
+            while (true)
+            {
+                name = Console.ReadLine();
+                if (!(name == null || name == "")) break;
+
+                Console.WriteLine("Invalid name");
+            }
+
             _customers.Add(new Customer(name));
         }
 
@@ -65,29 +72,27 @@ namespace Laboration_1_OOP
 
             Console.WriteLine("\nSelect customer by number");
 
-            int inputInt = getIntInput();
+            int customerNum = GetIntInput();
 
-            if (_customers.Count < inputInt || inputInt < 1)
+            if (_customers.Count < customerNum || customerNum < 1)
             {
                 Console.WriteLine("Invalid customer");
                 return;
             }
 
-            Customer customer = _customers[inputInt - 1];
+            Customer customer = _customers[customerNum - 1];
 
             while (true)
             {
                 Console.WriteLine("\n1: Select product\n2: View cart\n0: Back");
 
-                inputInt = getIntInput();
-
-                switch (inputInt)
+                switch (GetIntInput())
                 {
                     case 1:
                         SelectProduct(customer);
                         break;
                     case 2:
-                        ViewCart(customer);
+                        EditCart(customer);
                         break;
                     case 0:
                         return;
@@ -106,9 +111,9 @@ namespace Laboration_1_OOP
                 Console.WriteLine((i + 1) + ": " + _products[i]._name);
             }
 
-            Console.WriteLine("\nSelect product by number");
+            Console.WriteLine("\nSelect product by number (0: Back)");
 
-            int inputInt = getIntInput();
+            int inputInt = GetIntInput();
 
             if (_products.Count < inputInt || inputInt < 1)
             {
@@ -118,14 +123,16 @@ namespace Laboration_1_OOP
 
             Product product = (Product)_products[inputInt - 1].Clone();
 
-            Console.WriteLine("Amount?");
-
+            Console.WriteLine("Price: " + product._cost + "kr");
+            Console.WriteLine("Amount? (0: Back)");
 
             int amount;
-            while (true){
-                amount = getIntInput();
+            while (true)
+            {
+                amount = GetIntInput();
+                if (amount == 0) return;
                 if (amount > 0) break;
-                Console.WriteLine("Bad amount");
+                Console.WriteLine("Invalid amount");
             }
 
             product._amount = amount;
@@ -133,8 +140,7 @@ namespace Laboration_1_OOP
             customer._products.Add(product);
         }
 
-
-        static void ViewCart(Customer customer)
+        static void EditCart(Customer customer)
         {
             Console.WriteLine("\nProducts:");
 
@@ -143,16 +149,44 @@ namespace Laboration_1_OOP
             for (int i = 0; i < customer._products.Count; i++)
             {
                 Product product = customer._products[i];
-                Console.WriteLine(product._amount + "st: " + product._name);
+                Console.WriteLine((i + 1) + ": " + product._amount + "st: " + product._name);
 
                 cost += product._cost * product._amount;
             }
 
             Console.WriteLine("Total cost: " + cost + "kr");
+
+            Console.WriteLine("\nSelect product by number (0: Back)");
+            int productNum = GetIntInput();
+
+            if (productNum == 0) return;
+
+            if (customer._products.Count < productNum || productNum < 1)
+            {
+                Console.WriteLine("Invalid product");
+                return;
+            }
+
+            Console.WriteLine("\n1: Remove product\n2: Change amount\n0: Back");
+
+            switch (GetIntInput())
+            {
+                case 1:
+                    customer._products.RemoveAt(productNum - 1);
+                    break;
+                case 2:
+                    Console.WriteLine("Amount? (0: Back)");
+                    int amount = GetIntInput();
+                    if (amount < 1) break;
+                    customer._products[productNum - 1]._amount = amount;
+                    break;
+                default:
+                    break;
+            }
         }
 
         //Default: -1
-        static int getIntInput()
+        static int GetIntInput()
         {
             string inputString = Console.ReadLine();
 

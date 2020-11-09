@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace Calculator
 {
@@ -42,10 +43,26 @@ namespace Calculator
                 {"7", "8", "9"},
                 {"4", "5", "6"},
                 {"1", "2", "3"},
-                {"", "0", ""}
+                {"a", "0", "b"}
             };
 
+            Debug.WriteLine(buttons.GetLength(0));
+
+            for (int i = 0; i < buttons.GetLength(0) -3; i++)
+            {
+                for (int j = 0; j < buttons.GetLength(1) - 1; i++)
+                {
+                    var button = new Button();
+                    button.SetValue(Grid.ColumnProperty, j);
+                    button.SetValue(Grid.RowProperty, i);
+                    button.SetValue(ContentProperty, buttons[i,j]);
+                    mainGrid.Children.Add(button);
+                }
+            }
+
+
             //Create buttons 1-9
+            /*
             for (int i = 1; i <= 9; i++)
             {
                 var button = new Button();
@@ -53,7 +70,7 @@ namespace Calculator
                 button.SetValue(Grid.RowProperty, (i-1)/3);
                 button.SetValue(ContentProperty, i);
                 mainGrid.Children.Add(button);
-            }
+            }*/
 
         }
     }

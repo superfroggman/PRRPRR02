@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using System.Data;
 
 namespace Calculator
 {
@@ -40,23 +41,29 @@ namespace Calculator
             }
 
             string[,] buttons = new string[,] {
-                {"7", "8", "9"},
-                {"4", "5", "6"},
-                {"1", "2", "3"},
-                {"a", "0", "b"}
+                {"", "", "", "C" },
+                {"7", "8", "9", "+"},
+                {"4", "5", "6", "-"},
+                {"1", "2", "3", "*"},
+                {",", "0", "=", "/"}
             };
 
             //Debug.WriteLine(buttons.GetLength(0));
+
+            int buttonOffsetX = 0;
+            int buttonOffsetY = 0;
 
             for (int i = 0; i < buttons.GetLength(0); i++)
             {
                 for (int j = 0; j < buttons.GetLength(1); j++)
                 {
+                    if (buttons[i, j] == "") continue;
+
                     var button = new Button();
-                    button.SetValue(Grid.ColumnProperty, j);
-                    button.SetValue(Grid.RowProperty, i);
-                    Debug.WriteLine("i:" + i + " j:" + j);
+                    button.SetValue(Grid.ColumnProperty, j+buttonOffsetX);
+                    button.SetValue(Grid.RowProperty, i+buttonOffsetY);
                     button.SetValue(ContentProperty, buttons[i,j]);
+                    button.Click += new RoutedEventHandler(Button_Click);
                     mainGrid.Children.Add(button);
                 }
             }
@@ -73,6 +80,33 @@ namespace Calculator
                 mainGrid.Children.Add(button);
             }*/
 
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if(e.OriginalSource is Button button)
+            {
+                if(button.Content == "=")
+                {
+                    Calculate();
+                    return;
+                } else if(button.Content == "C")
+                {
+                    textBox.Text = "";
+                    return;
+                }
+                Debug.WriteLine(button.Content);
+                textBox.Text += button.Content;
+            }
+
+        }
+
+        private void Calculate()
+        {
+            string value = new DataTable().Compute(textBox.Text, null).ToString();
+            Debug.WriteLine(value);
+
+            textBox.Text = value;
         }
     }
 }

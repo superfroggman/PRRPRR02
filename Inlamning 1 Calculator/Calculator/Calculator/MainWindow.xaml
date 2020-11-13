@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid Name="mainGrid">
-
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Background="#FFA2A2A2" /> <!-- Dålig implementation på att lösa så att bakgrunden inte rör sig med texten -->
+        <TextBlock Name="textBox" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Background="#FFA2A2A2" FontSize="50" TextAlignment="Right" Padding="0,5,5,0" HorizontalAlignment="Right"/>
     </Grid>
 </Window>

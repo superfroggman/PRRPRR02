@@ -45,7 +45,7 @@ namespace Calculator
                 {"7", "8", "9", "+"},
                 {"4", "5", "6", "-"},
                 {"1", "2", "3", "*"},
-                {",", "0", "=", "/"}
+                {".", "0", "=", "/"}
             };
 
             //Debug.WriteLine(buttons.GetLength(0));
@@ -103,7 +103,7 @@ namespace Calculator
 
         private void Calculate()
         {
-            string value = new DataTable().Compute(textBox.Text, null).ToString();
+            string value = new DataTable().Compute(textBox.Text, null).ToString(); //Tydligen får jag inte använda detta så lös nåt annat
             Debug.WriteLine(value);
 
             textBox.Text = value;

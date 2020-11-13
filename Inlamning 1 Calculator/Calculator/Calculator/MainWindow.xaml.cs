@@ -46,15 +46,16 @@ namespace Calculator
                 {"a", "0", "b"}
             };
 
-            Debug.WriteLine(buttons.GetLength(0));
+            //Debug.WriteLine(buttons.GetLength(0));
 
-            for (int i = 0; i < buttons.GetLength(0) -3; i++)
+            for (int i = 0; i < buttons.GetLength(0); i++)
             {
-                for (int j = 0; j < buttons.GetLength(1) - 1; i++)
+                for (int j = 0; j < buttons.GetLength(1); j++)
                 {
                     var button = new Button();
                     button.SetValue(Grid.ColumnProperty, j);
                     button.SetValue(Grid.RowProperty, i);
+                    Debug.WriteLine("i:" + i + " j:" + j);
                     button.SetValue(ContentProperty, buttons[i,j]);
                     mainGrid.Children.Add(button);
                 }

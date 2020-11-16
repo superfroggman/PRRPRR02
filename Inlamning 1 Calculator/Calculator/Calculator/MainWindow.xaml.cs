@@ -60,37 +60,25 @@ namespace Calculator
                     if (buttons[i, j] == "") continue;
 
                     var button = new Button();
-                    button.SetValue(Grid.ColumnProperty, j+buttonOffsetX);
-                    button.SetValue(Grid.RowProperty, i+buttonOffsetY);
-                    button.SetValue(ContentProperty, buttons[i,j]);
+                    button.SetValue(Grid.ColumnProperty, j + buttonOffsetX);
+                    button.SetValue(Grid.RowProperty, i + buttonOffsetY);
+                    button.SetValue(ContentProperty, buttons[i, j]);
                     button.Click += new RoutedEventHandler(Button_Click);
                     mainGrid.Children.Add(button);
                 }
             }
-
-
-            //Create buttons 1-9
-            /*
-            for (int i = 1; i <= 9; i++)
-            {
-                var button = new Button();
-                button.SetValue(Grid.ColumnProperty, (i-1)%3);
-                button.SetValue(Grid.RowProperty, (i-1)/3);
-                button.SetValue(ContentProperty, i);
-                mainGrid.Children.Add(button);
-            }*/
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(e.OriginalSource is Button button)
+            if (e.OriginalSource is Button button)
             {
-                if(button.Content == "=")
+                if (button.Content == "=")
                 {
                     Calculate();
                     return;
-                } else if(button.Content == "C")
+                }
+                else if (button.Content == "C")
                 {
                     textBox.Text = "";
                     return;
@@ -101,12 +89,68 @@ namespace Calculator
 
         }
 
+
+
         private void Calculate()
         {
-            string value = new DataTable().Compute(textBox.Text, null).ToString(); //Tydligen får jag inte använda detta så lös nåt annat
-            Debug.WriteLine(value);
+            //Auto generera detta sen
+            List<string> operators = new List<string>();
+            operators.Add("*");
+            operators.Add("/");
+            operators.Add("+");
+            operators.Add("-");
 
-            textBox.Text = value;
+            string input = textBox.Text;
+            int result = 0;
+
+            List<string> outputQueue = new List<string>();
+            List<char> operatorStack = new List<char>();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+
+                if (Char.IsNumber(input[i]) || input[i] == '.')
+                {
+                    int numLength = 0;
+                    while (i + numLength < input.Length)
+                    {
+                        Char c = input[i + numLength];
+                        if (Char.IsNumber(c) || c == '.')
+                        {
+                            numLength += 1;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    if (numLength != 0)
+                    {
+                        string num = input.Substring(i, numLength);
+                        Debug.WriteLine(numLength + ", coocol , " + num);
+
+                        i += numLength - 1;
+
+                        outputQueue.Add(num);
+                    }
+                }
+
+                if (operators.Contains(input[i].ToString()))
+                {
+                    int topOpI = operators.IndexOf(operatorStack[operatorStack.Count - 1].ToString());
+                    int curOpI = operators.IndexOf(input[i].ToString());
+                    //TODO: finish implementing shunting yard
+                    //TODO: fininsh operator class or something to solve predencence
+                    //https://en.wikipedia.org/wiki/Shunting-yard_algorithm#A_simple_conversion
+                    //du är här på wikipedia sidan: or (the operator at the top of the operator stack has equal precedence and the token is left associative))
+                    while (operatorStack.Count > 0 && (topOpI>curOpI || ()))
+                    {
+
+                    }
+                }
+                
+
+            }
         }
     }
 }

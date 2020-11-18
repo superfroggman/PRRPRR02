@@ -229,6 +229,7 @@ namespace Calculator
         //COPY PASTED TO TEST!
         private static double evalrpn(Stack<string> tks)
         {
+            if (tks.Count <= 0) return 0;
             string tk = tks.Pop();
             double x, y;
             if (!Double.TryParse(tk, out x))

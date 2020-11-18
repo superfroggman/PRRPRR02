@@ -6,7 +6,13 @@ namespace Calculator
 {
     class Operator
     {
-        char op = '+';
-        int pred = 0;
+        public char _op = '+';
+        public int _pred = 0;
+
+        public Operator(char op, int pred)
+        {
+            _op = op;
+            _pred = pred;
+        }
     }
 }

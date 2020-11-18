@@ -23,7 +23,7 @@ namespace Calculator
     public partial class MainWindow : Window
     {
 
-        int gridWidth = 5;
+        int gridWidth = 4;
         int gridHeight = 5;
 
         public MainWindow()
@@ -94,21 +94,24 @@ namespace Calculator
         private void Calculate()
         {
             //Auto generera detta sen
-            List<string> operators = new List<string>();
-            operators.Add("*");
-            operators.Add("/");
-            operators.Add("+");
-            operators.Add("-");
+            List<Operator> operators = new List<Operator>();
+            operators.Add(new Operator('*', 0));
+            operators.Add(new Operator('/', 0));
+            operators.Add(new Operator('+', 1));
+            operators.Add(new Operator('-', 1));
 
             string input = textBox.Text;
             int result = 0;
 
-            List<string> outputQueue = new List<string>();
-            List<char> operatorStack = new List<char>();
+            Stack<string> outputQueue = new Stack<string>();
+            Stack<char> operatorStack = new Stack<char>();
+
+            char topOp = '+';
+            int topOpI = 0;
 
             for (int i = 0; i < input.Length; i++)
             {
-
+                //On char is number or .
                 if (Char.IsNumber(input[i]) || input[i] == '.')
                 {
                     int numLength = 0;
@@ -131,26 +134,113 @@ namespace Calculator
 
                         i += numLength - 1;
 
-                        outputQueue.Add(num);
+                        outputQueue.Push(num);
                     }
                 }
 
-                if (operators.Contains(input[i].ToString()))
+                bool isOperator = false;
+
+                int curOpI = 0;
+
+                foreach (Operator op in operators)
                 {
-                    int topOpI = operators.IndexOf(operatorStack[operatorStack.Count - 1].ToString());
-                    int curOpI = operators.IndexOf(input[i].ToString());
-                    //TODO: finish implementing shunting yard
-                    //TODO: fininsh operator class or something to solve predencence
-                    //https://en.wikipedia.org/wiki/Shunting-yard_algorithm#A_simple_conversion
-                    //du är här på wikipedia sidan: or (the operator at the top of the operator stack has equal precedence and the token is left associative))
-                    while (operatorStack.Count > 0 && (topOpI>curOpI || ()))
+                    if (op._op == input[i])
                     {
+                        isOperator = true;
+                        curOpI = operators.IndexOf(op);
+                    }
+
+                    if (op._op == topOp)
+                    {
+                        topOpI = operators.IndexOf(op);
+                    }
+                }
+
+                //On char is operator
+                if (isOperator)
+                {
+                    while (operatorStack.Count > 0 && (topOpI > curOpI || operators[topOpI]._op == operators[curOpI]._op) && topOp != '(')
+                    {
+                        outputQueue.Push(topOp.ToString());
+                        operatorStack.Pop();
+
+                        topOp = operatorStack.Peek();
+                        topOpI = GetTopOpI(operators, operatorStack);
+                    }
+
+                    outputQueue.Push(input[i].ToString());
+                }
+
+                else if (input[i] == '(')
+                {
+                    operatorStack.Push('(');
+                }
+                else if (input[i] == ')')
+                {
+                    while (topOp != '(')
+                    {
+                        outputQueue.Push(topOp.ToString());
+                        operatorStack.Pop();
+
+                        topOp = operatorStack.Peek();
+                        topOpI = GetTopOpI(operators, operatorStack);
+                    }
+
+                    if(topOp == '(')
+                    {
+                        operatorStack.Pop();
+
+                        topOp = operatorStack.Peek();
+                        topOpI = GetTopOpI(operators, operatorStack);
 
                     }
                 }
-                
-
             }
+            while(operatorStack.Count > 0)
+            {
+                outputQueue.Push(topOp.ToString());
+                operatorStack.Pop();
+
+                topOp = operatorStack.Peek();
+                topOpI = GetTopOpI(operators, operatorStack);
+            }
+
+            Debug.WriteLine("ANSWER!: " + evalrpn(outputQueue));
+
+            textBox.Text = evalrpn(outputQueue).ToString();
+        }
+
+        private int GetTopOpI(List<Operator> operators, Stack<char> operatorStack)
+        {
+            int topOpI = 0;
+
+
+            foreach (Operator op in operators)
+            {
+                if (op._op == operatorStack.Peek())
+                {
+                    topOpI = operators.IndexOf(op);
+                }
+            }
+
+            return topOpI;
+        }
+
+        //COPY PASTED TO TEST!
+        private static double evalrpn(Stack<string> tks)
+        {
+            string tk = tks.Pop();
+            double x, y;
+            if (!Double.TryParse(tk, out x))
+            {
+                y = evalrpn(tks); x = evalrpn(tks);
+                if (tk == "+") x += y;
+                else if (tk == "-") x -= y;
+                else if (tk == "*") x *= y;
+                else if (tk == "/") x /= y;
+                else throw new Exception();
+            }
+            return x;
         }
     }
 }

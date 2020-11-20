@@ -159,7 +159,7 @@ namespace Calculator
                 //else if the token is an operator then:
                 if (isOperator)
                 {
-                    Debug.WriteLine("IS OPERATOR!!");
+                    Debug.WriteLine("IS OPERATOR: " + topOp);
                     //while ((there is an operator at the top of the operator stack)
                     //  and ((the operator at the top of the operator stack has greater precedence)
                     //      or(the operator at the top of the operator stack has equal precedence and the token is left associative))
@@ -170,8 +170,11 @@ namespace Calculator
                         outputQueue.Push(topOp.ToString());
                         operatorStack.Pop();
 
-                        topOp = operatorStack.Peek();
-                        topOpI = GetTopOpI(operators, operatorStack);
+                        if (operatorStack.Count > 0)
+                        {
+                            topOp = operatorStack.Peek();
+                            topOpI = GetTopOpI(operators, operatorStack);
+                        }
                     }
 
                     //push it onto the operator stack.
@@ -218,16 +221,16 @@ namespace Calculator
             while (operatorStack.Count > 0)
             {
                 //pop the operator from the operator stack onto the output queue.
+                topOp = operatorStack.Peek();
+
                 outputQueue.Push(topOp.ToString());
                 operatorStack.Pop();
             }
 
             Debug.WriteLine("Final queue: " + stackToString(outputQueue));
 
-
-
+            //TODO: skriv egen uträkning
             Debug.WriteLine("ANSWER!: " + evalrpn(outputQueue));
-
             textBox.Text = evalrpn(outputQueue).ToString();
         }
 

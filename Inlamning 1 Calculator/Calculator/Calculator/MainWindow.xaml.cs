@@ -23,7 +23,7 @@ namespace Calculator
     public partial class MainWindow : Window
     {
 
-        int gridWidth = 4;
+        int gridWidth = 5;
         int gridHeight = 5;
 
         public MainWindow()
@@ -41,14 +41,12 @@ namespace Calculator
             }
 
             string[,] buttons = new string[,] {
-                {"", "", "", "C" },
-                {"7", "8", "9", "+"},
-                {"4", "5", "6", "-"},
-                {"1", "2", "3", "*"},
-                {".", "0", "=", "/"}
+                {"", "", "", "C", "("},
+                {"7", "8", "9", "+", ")"},
+                {"4", "5", "6", "-", ""},
+                {"1", "2", "3", "*", ""},
+                {".", "0", "=", "/", ""}
             };
-
-            //Debug.WriteLine(buttons.GetLength(0));
 
             int buttonOffsetX = 0;
             int buttonOffsetY = 0;
@@ -101,7 +99,6 @@ namespace Calculator
             operators.Add(new Operator('-', 1));
 
             string input = textBox.Text;
-            int result = 0;
 
             Stack<string> outputQueue = new Stack<string>();
             Stack<char> operatorStack = new Stack<char>();
@@ -109,9 +106,12 @@ namespace Calculator
             char topOp = '+';
             int topOpI = 0;
 
+            //while there are tokens to be read:
             for (int i = 0; i < input.Length; i++)
             {
-                //On char is number or .
+                //read a token.
+
+                //if the token is a number, then:
                 if (Char.IsNumber(input[i]) || input[i] == '.')
                 {
                     int numLength = 0;
@@ -130,10 +130,10 @@ namespace Calculator
                     if (numLength != 0)
                     {
                         string num = input.Substring(i, numLength);
-                        Debug.WriteLine(numLength + ", coocol , " + num);
 
                         i += numLength - 1;
 
+                        //push it to the output queue.
                         outputQueue.Push(num);
                     }
                 }
@@ -156,11 +156,17 @@ namespace Calculator
                     }
                 }
 
-                //On char is operator
+                //else if the token is an operator then:
                 if (isOperator)
                 {
+                    Debug.WriteLine("IS OPERATOR!!");
+                    //while ((there is an operator at the top of the operator stack)
+                    //  and ((the operator at the top of the operator stack has greater precedence)
+                    //      or(the operator at the top of the operator stack has equal precedence and the token is left associative))
+                    //  and(the operator at the top of the operator stack is not a left parenthesis)):
                     while (operatorStack.Count > 0 && (topOpI > curOpI || operators[topOpI]._op == operators[curOpI]._op) && topOp != '(')
                     {
+                        //pop operators from the operator stack onto the output queue.
                         outputQueue.Push(topOp.ToString());
                         operatorStack.Pop();
 
@@ -168,17 +174,23 @@ namespace Calculator
                         topOpI = GetTopOpI(operators, operatorStack);
                     }
 
-                    outputQueue.Push(input[i].ToString());
+                    //push it onto the operator stack.
+                    operatorStack.Push(input[i]);
                 }
 
+                //else if the token is a left parenthesis (i.e. "("), then:
                 else if (input[i] == '(')
                 {
+                    //push it onto the operator stack.
                     operatorStack.Push('(');
                 }
+                //else if the token is a right parenthesis(i.e. ")"), then:
                 else if (input[i] == ')')
                 {
+                    //while the operator at the top of the operator stack is not a left parenthesis:
                     while (topOp != '(')
                     {
+                        //pop the operator from the operator stack onto the output queue.
                         outputQueue.Push(topOp.ToString());
                         operatorStack.Pop();
 
@@ -186,8 +198,10 @@ namespace Calculator
                         topOpI = GetTopOpI(operators, operatorStack);
                     }
 
-                    if(topOp == '(')
+                    //if there is a left parenthesis at the top of the operator stack, then:
+                    if (topOp == '(')
                     {
+                        //pop the operator from the operator stack and discard it
                         operatorStack.Pop();
 
                         topOp = operatorStack.Peek();
@@ -195,15 +209,22 @@ namespace Calculator
 
                     }
                 }
+                Debug.WriteLine("Out" + i + ": " + stackToString(outputQueue));
+                Debug.WriteLine("OpS" + i + ": " + charStackToString(operatorStack));
             }
-            while(operatorStack.Count > 0)
+
+            //if there are no more tokens to read then:
+            //while there are still operator tokens on the stack:
+            while (operatorStack.Count > 0)
             {
+                //pop the operator from the operator stack onto the output queue.
                 outputQueue.Push(topOp.ToString());
                 operatorStack.Pop();
-
-                topOp = operatorStack.Peek();
-                topOpI = GetTopOpI(operators, operatorStack);
             }
+
+            Debug.WriteLine("Final queue: " + stackToString(outputQueue));
+
+
 
             Debug.WriteLine("ANSWER!: " + evalrpn(outputQueue));
 
@@ -242,6 +263,34 @@ namespace Calculator
                 else throw new Exception();
             }
             return x;
+        }
+
+        private string stackToString(Stack<string> stack)
+        {
+            string[] outputArray = stack.ToArray();
+
+            string res = "";
+
+            foreach (string str in outputArray)
+            {
+                res += str + " ; ";
+            }
+
+            return res;
+        }
+
+        private string charStackToString(Stack<char> stack)
+        {
+            char[] outputArray = stack.ToArray();
+
+            string res = "";
+
+            foreach (char str in outputArray)
+            {
+                res += str + " ; ";
+            }
+
+            return res;
         }
     }
 }

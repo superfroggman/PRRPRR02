@@ -100,11 +100,11 @@ namespace Calculator
 
             string input = textBox.Text;
 
-            Stack<string> outputQueue = new Stack<string>();
+            List<string> outputQueue = new List<string>();
             Stack<char> operatorStack = new Stack<char>();
 
-            char topOp = '+';
-            int topOpI = 0;
+            char topOp;
+            int topOpI;
 
             //while there are tokens to be read:
             for (int i = 0; i < input.Length; i++)
@@ -134,13 +134,16 @@ namespace Calculator
                         i += numLength - 1;
 
                         //push it to the output queue.
-                        outputQueue.Push(num);
+                        outputQueue.Add(num);
                     }
                 }
 
                 bool isOperator = false;
 
                 int curOpI = 0;
+
+                topOp = '+';
+                topOpI = 0;
 
                 foreach (Operator op in operators)
                 {
@@ -150,8 +153,9 @@ namespace Calculator
                         curOpI = operators.IndexOf(op);
                     }
 
-                    if (op._op == topOp)
+                    if (operatorStack.Count>0 &&  op._op == operatorStack.Peek())
                     {
+                        topOp = op._op;
                         topOpI = operators.IndexOf(op);
                     }
                 }
@@ -159,15 +163,15 @@ namespace Calculator
                 //else if the token is an operator then:
                 if (isOperator)
                 {
-                    Debug.WriteLine("IS OPERATOR: " + topOp);
+                    Debug.WriteLine("IS OPERATOR: " + operators[curOpI]._op);
                     //while ((there is an operator at the top of the operator stack)
                     //  and ((the operator at the top of the operator stack has greater precedence)
                     //      or(the operator at the top of the operator stack has equal precedence and the token is left associative))
                     //  and(the operator at the top of the operator stack is not a left parenthesis)):
-                    while (operatorStack.Count > 0 && (topOpI > curOpI || operators[topOpI]._op == operators[curOpI]._op) && topOp != '(')
+                    while (operatorStack.Count > 0 && (topOpI < curOpI || topOp == operators[curOpI]._op) && topOp != '(')
                     {
                         //pop operators from the operator stack onto the output queue.
-                        outputQueue.Push(topOp.ToString());
+                        outputQueue.Add(topOp.ToString());
                         operatorStack.Pop();
 
                         if (operatorStack.Count > 0)
@@ -194,11 +198,10 @@ namespace Calculator
                     while (topOp != '(')
                     {
                         //pop the operator from the operator stack onto the output queue.
-                        outputQueue.Push(topOp.ToString());
+                        outputQueue.Add(topOp.ToString());
                         operatorStack.Pop();
 
                         topOp = operatorStack.Peek();
-                        topOpI = GetTopOpI(operators, operatorStack);
                     }
 
                     //if there is a left parenthesis at the top of the operator stack, then:
@@ -207,12 +210,9 @@ namespace Calculator
                         //pop the operator from the operator stack and discard it
                         operatorStack.Pop();
 
-                        topOp = operatorStack.Peek();
-                        topOpI = GetTopOpI(operators, operatorStack);
-
                     }
                 }
-                Debug.WriteLine("Out" + i + ": " + stackToString(outputQueue));
+                Debug.WriteLine("Out" + i + ": " + ListToString(outputQueue));
                 Debug.WriteLine("OpS" + i + ": " + charStackToString(operatorStack));
             }
 
@@ -223,15 +223,15 @@ namespace Calculator
                 //pop the operator from the operator stack onto the output queue.
                 topOp = operatorStack.Peek();
 
-                outputQueue.Push(topOp.ToString());
+                outputQueue.Add(topOp.ToString());
                 operatorStack.Pop();
             }
 
-            Debug.WriteLine("Final queue: " + stackToString(outputQueue));
+            Debug.WriteLine("Final queue: " + ListToString(outputQueue));
 
             //TODO: skriv egen uträkning
-            Debug.WriteLine("ANSWER!: " + evalrpn(outputQueue));
-            textBox.Text = evalrpn(outputQueue).ToString();
+            Debug.WriteLine("ANSWER!: " + CalculateRPN(ListToString(outputQueue)));
+            textBox.Text = CalculateRPN(ListToString(outputQueue)).ToString();
         }
 
         private int GetTopOpI(List<Operator> operators, Stack<char> operatorStack)
@@ -250,22 +250,97 @@ namespace Calculator
             return topOpI;
         }
 
-        //COPY PASTED TO TEST!
-        private static double evalrpn(Stack<string> tks)
+        //FROM ROSETTA CODE
+        static decimal CalculateRPN(string rpn)
         {
-            if (tks.Count <= 0) return 0;
-            string tk = tks.Pop();
-            double x, y;
-            if (!Double.TryParse(tk, out x))
+            string[] rpnTokens = rpn.Split(' ');
+            Stack<decimal> stack = new Stack<decimal>();
+            decimal number = decimal.Zero;
+
+            foreach (string token in rpnTokens)
             {
-                y = evalrpn(tks); x = evalrpn(tks);
-                if (tk == "+") x += y;
-                else if (tk == "-") x -= y;
-                else if (tk == "*") x *= y;
-                else if (tk == "/") x /= y;
-                else throw new Exception();
+                if (decimal.TryParse(token, out number))
+                {
+                    stack.Push(number);
+                }
+                else
+                {
+                    switch (token)
+                    {
+                        case "^":
+                        case "pow":
+                            {
+                                number = stack.Pop();
+                                stack.Push((decimal)Math.Pow((double)stack.Pop(), (double)number));
+                                break;
+                            }
+                        case "ln":
+                            {
+                                stack.Push((decimal)Math.Log((double)stack.Pop(), Math.E));
+                                break;
+                            }
+                        case "sqrt":
+                            {
+                                stack.Push((decimal)Math.Sqrt((double)stack.Pop()));
+                                break;
+                            }
+                        case "*":
+                            {
+                                stack.Push(stack.Pop() * stack.Pop());
+                                break;
+                            }
+                        case "/":
+                            {
+                                number = stack.Pop();
+                                stack.Push(stack.Pop() / number);
+                                break;
+                            }
+                        case "+":
+                            {
+                                stack.Push(stack.Pop() + stack.Pop());
+                                break;
+                            }
+                        case "-":
+                            {
+                                number = stack.Pop();
+                                stack.Push(stack.Pop() - number);
+                                break;
+                            }
+                        default:
+                            Console.WriteLine("Error in CalculateRPN(string) Method!");
+                            break;
+                    }
+                }
+                PrintState(stack);
             }
-            return x;
+
+            return stack.Pop();
+        }
+
+        static void PrintState(Stack<decimal> stack)
+        {
+            decimal[] arr = stack.ToArray();
+
+            for (int i = arr.Length - 1; i >= 0; i--)
+            {
+                Console.Write("{0,-8:F3}", arr[i]);
+            }
+
+            Console.WriteLine();
+        }
+
+        private string ListToString(List<string> list)
+        {
+            string[] outputArray = list.ToArray();
+
+            string res = "";
+
+            foreach (string str in outputArray)
+            {
+                res += str + " ";
+            }
+
+            return res;
         }
 
         private string stackToString(Stack<string> stack)

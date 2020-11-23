@@ -41,9 +41,9 @@ namespace Calculator
             }
 
             string[,] buttons = new string[,] {
-                {"", "", "", "C", "("},
-                {"7", "8", "9", "+", ")"},
-                {"4", "5", "6", "-", ""},
+                {"", "", "", "C", "rm"},
+                {"7", "8", "9", "+", "("},
+                {"4", "5", "6", "-", ")"},
                 {"1", "2", "3", "*", ""},
                 {".", "0", "=", "/", ""}
             };
@@ -71,23 +71,27 @@ namespace Calculator
         {
             if (e.OriginalSource is Button button)
             {
-                if (button.Content == "=")
+
+                switch (button.Content)
                 {
-                    Calculate();
-                    return;
+                    case "=":
+                        Calculate();
+                        break;
+                    case "C":
+                        textBox.Text = "";
+                        break;
+                    case "rm":
+                        if (textBox.Text.Length > 0)
+                        {
+                            textBox.Text = textBox.Text.Remove(textBox.Text.Length - 1);
+                        }
+                        break;
+                    default:
+                        textBox.Text += button.Content;
+                        break;
                 }
-                else if (button.Content == "C")
-                {
-                    textBox.Text = "";
-                    return;
-                }
-                Debug.WriteLine(button.Content);
-                textBox.Text += button.Content;
             }
-
         }
-
-
 
         private void Calculate()
         {

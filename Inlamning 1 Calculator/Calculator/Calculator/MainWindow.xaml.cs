@@ -100,6 +100,18 @@ namespace Calculator
 
             string input = textBox.Text;
 
+            List<string> outputQueue = DoTheShuntingYard(input, operators);
+
+            Debug.WriteLine("Final queue: " + ListToString(outputQueue));
+
+            //TODO: skriv egen uträkning
+            Debug.WriteLine("ANSWER!: " + CalculateRPN(ListToString(outputQueue)));
+            textBox.Text = CalculateRPN(ListToString(outputQueue)).ToString();
+        }
+
+
+        private List<string> DoTheShuntingYard(string input, List<Operator> operators)
+        {
             List<string> outputQueue = new List<string>();
             Stack<char> operatorStack = new Stack<char>();
 
@@ -153,7 +165,7 @@ namespace Calculator
                         curOpI = operators.IndexOf(op);
                     }
 
-                    if (operatorStack.Count>0 &&  op._op == operatorStack.Peek())
+                    if (operatorStack.Count > 0 && op._op == operatorStack.Peek())
                     {
                         topOp = op._op;
                         topOpI = operators.IndexOf(op);
@@ -227,11 +239,7 @@ namespace Calculator
                 operatorStack.Pop();
             }
 
-            Debug.WriteLine("Final queue: " + ListToString(outputQueue));
-
-            //TODO: skriv egen uträkning
-            Debug.WriteLine("ANSWER!: " + CalculateRPN(ListToString(outputQueue)));
-            textBox.Text = CalculateRPN(ListToString(outputQueue)).ToString();
+            return outputQueue;
         }
 
         private int GetTopOpI(List<Operator> operators, Stack<char> operatorStack)

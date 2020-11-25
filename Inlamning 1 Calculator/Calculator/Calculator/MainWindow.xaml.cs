@@ -262,6 +262,26 @@ namespace Calculator
             return topOpI;
         }
 
+
+        private double RPNCalculator(List<string> rpn)
+        {
+
+            foreach(string token in rpn)
+            {
+                double num = 0;
+                if (double.TryParse(token, out num))
+                {
+                    Debug.WriteLine(num);
+                }
+                else
+                {
+                    //Check operators
+                }
+            }
+
+            return 1;
+        }
+
         //FROM ROSETTA CODE
         static decimal CalculateRPN(string rpn)
         {

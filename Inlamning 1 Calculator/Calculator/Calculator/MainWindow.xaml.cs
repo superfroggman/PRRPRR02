@@ -246,10 +246,10 @@ namespace Calculator
             return outputQueue;
         }
 
+        //Gets index of operator at top of stack
         private int GetTopOpI(List<Operator> operators, Stack<char> operatorStack)
         {
             int topOpI = 0;
-
 
             foreach (Operator op in operators)
             {

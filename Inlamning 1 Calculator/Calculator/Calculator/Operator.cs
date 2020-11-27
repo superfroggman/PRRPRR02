@@ -9,10 +9,9 @@ namespace Calculator
         public char _op = '+';
         public int _pred = 0;
 
-        public Operator(char op, int pred)
+        public virtual double Operate(double num1, double num2)
         {
-            _op = op;
-            _pred = pred;
+            return 0;
         }
     }
 }

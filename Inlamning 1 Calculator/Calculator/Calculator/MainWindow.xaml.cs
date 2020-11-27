@@ -26,9 +26,18 @@ namespace Calculator
         int gridWidth = 5;
         int gridHeight = 5;
 
+        List<Operator> operators = new List<Operator>();
+
+
+
         public MainWindow()
         {
             InitializeComponent();
+
+            operators.Add(new Multiply());
+            operators.Add(new Division());
+            operators.Add(new Addition());
+            operators.Add(new Subtraction());
 
             //Set grid to correct size
             for (int i = 0; i < gridWidth; i++)
@@ -95,22 +104,17 @@ namespace Calculator
 
         private void Calculate()
         {
-            //Auto generera detta sen
-            List<Operator> operators = new List<Operator>();
-            operators.Add(new Operator('*', 0));
-            operators.Add(new Operator('/', 0));
-            operators.Add(new Operator('+', 1));
-            operators.Add(new Operator('-', 1));
-
             string input = textBox.Text;
 
             List<string> outputQueue = DoTheShuntingYard(input, operators);
 
             Debug.WriteLine("Final queue: " + ListToString(outputQueue));
 
+            double answer = RPNCalculator(outputQueue);
+
             //TODO: skriv egen uträkning
-            Debug.WriteLine("ANSWER!: " + CalculateRPN(ListToString(outputQueue)));
-            textBox.Text = CalculateRPN(ListToString(outputQueue)).ToString();
+            Debug.WriteLine("ANSWER!: " + answer);
+            textBox.Text = answer.ToString();
         }
 
 
@@ -262,103 +266,36 @@ namespace Calculator
             return topOpI;
         }
 
-
+        //Inspired by rosetta code example
+        //I haven't quite figured out how everything works, using some stuff from example
         private double RPNCalculator(List<string> rpn)
         {
+            Stack<double> stack = new Stack<double>();
 
-            foreach(string token in rpn)
+            foreach (string token in rpn)
             {
                 double num = 0;
                 if (double.TryParse(token, out num))
                 {
-                    Debug.WriteLine(num);
+                    stack.Push(num);
                 }
                 else
                 {
                     //Check operators
-                }
-            }
-
-            return 1;
-        }
-
-        //FROM ROSETTA CODE
-        static decimal CalculateRPN(string rpn)
-        {
-            string[] rpnTokens = rpn.Split(' ');
-            Stack<decimal> stack = new Stack<decimal>();
-            decimal number = decimal.Zero;
-
-            foreach (string token in rpnTokens)
-            {
-                if (decimal.TryParse(token, out number))
-                {
-                    stack.Push(number);
-                }
-                else
-                {
-                    switch (token)
+                    foreach (Operator op in operators)
                     {
-                        case "^":
-                        case "pow":
-                            {
-                                number = stack.Pop();
-                                stack.Push((decimal)Math.Pow((double)stack.Pop(), (double)number));
-                                break;
-                            }
-                        case "ln":
-                            {
-                                stack.Push((decimal)Math.Log((double)stack.Pop(), Math.E));
-                                break;
-                            }
-                        case "sqrt":
-                            {
-                                stack.Push((decimal)Math.Sqrt((double)stack.Pop()));
-                                break;
-                            }
-                        case "*":
-                            {
-                                stack.Push(stack.Pop() * stack.Pop());
-                                break;
-                            }
-                        case "/":
-                            {
-                                number = stack.Pop();
-                                stack.Push(stack.Pop() / number);
-                                break;
-                            }
-                        case "+":
-                            {
-                                stack.Push(stack.Pop() + stack.Pop());
-                                break;
-                            }
-                        case "-":
-                            {
-                                number = stack.Pop();
-                                stack.Push(stack.Pop() - number);
-                                break;
-                            }
-                        default:
-                            Console.WriteLine("Error in CalculateRPN(string) Method!");
+                        if (token == op._op.ToString())
+                        {
+                            Debug.WriteLine(stackToString(stack));
+                            num = stack.Pop();
+                            stack.Push(op.Operate(stack.Pop(), num));
                             break;
+                        }
                     }
                 }
-                PrintState(stack);
             }
 
             return stack.Pop();
-        }
-
-        static void PrintState(Stack<decimal> stack)
-        {
-            decimal[] arr = stack.ToArray();
-
-            for (int i = arr.Length - 1; i >= 0; i--)
-            {
-                Console.Write("{0,-8:F3}", arr[i]);
-            }
-
-            Console.WriteLine();
         }
 
         private string ListToString(List<string> list)
@@ -375,13 +312,13 @@ namespace Calculator
             return res;
         }
 
-        private string stackToString(Stack<string> stack)
+        private string stackToString(Stack<double> stack)
         {
-            string[] outputArray = stack.ToArray();
+            double[] outputArray = stack.ToArray();
 
             string res = "";
 
-            foreach (string str in outputArray)
+            foreach (double str in outputArray)
             {
                 res += str + " ; ";
             }

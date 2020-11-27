@@ -286,7 +286,6 @@ namespace Calculator
                     {
                         if (token == op._op.ToString())
                         {
-                            Debug.WriteLine(stackToString(stack));
                             num = stack.Pop();
                             stack.Push(op.Operate(stack.Pop(), num));
                             break;
@@ -307,20 +306,6 @@ namespace Calculator
             foreach (string str in outputArray)
             {
                 res += str + " ";
-            }
-
-            return res;
-        }
-
-        private string stackToString(Stack<double> stack)
-        {
-            double[] outputArray = stack.ToArray();
-
-            string res = "";
-
-            foreach (double str in outputArray)
-            {
-                res += str + " ; ";
             }
 
             return res;

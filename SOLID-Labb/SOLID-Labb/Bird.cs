@@ -8,7 +8,7 @@ namespace SOLID_Labb
     {
         public Bird(string color): base(color)
         {
-            
+            _phrase = "Bird is peck-peck-pecking away!";
         }
 
         public override void Eat()
@@ -23,7 +23,7 @@ namespace SOLID_Labb
 
         public override void Speak()
         {
-            Console.WriteLine("Bird is peck-peck-pecking away!");
+            Console.WriteLine(_phrase);
         }
     }
 }

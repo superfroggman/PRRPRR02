@@ -6,6 +6,7 @@ namespace SOLID_Labb
     {
         static void Main(string[] args)
         {
+            Human[] humans = {new Human("Niklas")};
             Animal[] animals = {new Dog("Black"),
                             new Hedgehog("Pink"),
                             new Bird("Yellow")};
@@ -17,7 +18,9 @@ namespace SOLID_Labb
             {
                 if (animal is Dog dog)
                 {
-                    dog.TransferOwnership("Niklas");
+                    Human human = humans[0];
+                    human.GainOwnership(dog);
+                    dog._phrase = "Dog is eating. " + human.name + " is happy";
                 }
 
                 animal.Eat();

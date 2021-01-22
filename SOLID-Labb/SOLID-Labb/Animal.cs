@@ -9,6 +9,8 @@ namespace SOLID_Labb
 
         public string _color;
 
+        public string _phrase;
+
         public Animal(string color)
         {
             _color = color;

@@ -8,7 +8,7 @@ namespace SOLID_Labb
     {
         public Hedgehog(string color): base(color)
         {
-            
+            _phrase = "Hedgehog is omnomnoming!";
         }
 
         public override void Eat()
@@ -23,7 +23,7 @@ namespace SOLID_Labb
 
         public override void Speak()
         {
-            Console.WriteLine("Hedgehog is omnomnoming!");
+            Console.WriteLine(_phrase);
         }
     }
 }

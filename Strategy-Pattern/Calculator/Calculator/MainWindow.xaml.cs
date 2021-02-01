@@ -14,7 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Data;
-using Strategy;
+
+//TODO LÖS SÅ ATT DU KAN ANVÄNDA SAKER FRÅN STRATEGY MAPPEN
 
 namespace Calculator
 {

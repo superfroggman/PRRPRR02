@@ -4,14 +4,14 @@ using System.Text;
 
 namespace Slutprojekt
 {
-    class Gotchi : IGotchi, ITired
+    class Dog : IGotchi, ITired
     {
         private int maxTiredness = 100;
 
         public string name { get; private set; } = "Gotchi";
         public int tiredness { get; set; } = 0;
 
-        public Gotchi(string name)
+        public Dog(string name)
         {
             this.name = name;
         }

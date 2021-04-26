@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Slutprojekt
 {
-    class FIshy : IGotchi
+    class Fishy : IGotchi
     {
         public string name { get; private set; } = "Fishy";
 
-        public FIshy(string name)
+        public Fishy(string name)
         {
             this.name = name;
         }

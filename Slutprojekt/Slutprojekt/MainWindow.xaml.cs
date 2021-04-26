@@ -31,8 +31,8 @@ namespace Slutprojekt
         {
             InitializeComponent();
 
-            gotchis.Add(new Gotchi("cool"));
-            gotchis.Add(new FIshy("cat"));
+            gotchis.Add(new Dog("cool"));
+            gotchis.Add(new Fishy("cat"));
 
             //https://www.c-sharpcorner.com/blogs/digital-clock-in-wpf1
             Timer.Tick += new EventHandler(OnTimeStep);
@@ -47,16 +47,15 @@ namespace Slutprojekt
 
             for (int i = 0; i < gotchis.Count; i++)
             {
-                //Debug.WriteLine(gotchis[i].name + " hej " + ((gotchis[i] as ITired)==null));
                 if ((gotchis[i] as ITired) != null)
                 {
                     if ((gotchis[i] as ITired).ChangeTiredness(1))
                     {
                         gotchis.RemoveAt(i);
+                        i--;//Otherwise when removing it will skip one gotchi
                         Debug.WriteLine("ded");
-                        continue; //TODO: gör så att detta inte skippar nästa gotchi
+                        continue;
                     }
-                    Debug.WriteLine((gotchis[i] as ITired).tiredness);
                 }
             }
             

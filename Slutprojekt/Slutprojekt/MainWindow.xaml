@@ -17,5 +17,16 @@
             <RowDefinition Height="3*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button>
+                <Image Source="GFX/git.png"/>
+            </Button>
+        </Grid>
     </Grid>
 </Window>

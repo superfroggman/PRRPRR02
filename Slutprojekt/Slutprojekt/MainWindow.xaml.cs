@@ -47,15 +47,12 @@ namespace Slutprojekt
 
             for (int i = 0; i < gotchis.Count; i++)
             {
-                if ((gotchis[i] as ITired) != null)
+                if (gotchis[i].UpdateStatuses(1))
                 {
-                    if ((gotchis[i] as ITired).ChangeTiredness(1))
-                    {
-                        gotchis.RemoveAt(i);
-                        i--;//Otherwise when removing it will skip one gotchi
-                        Debug.WriteLine("ded");
-                        continue;
-                    }
+                    gotchis.RemoveAt(i);
+                    i--;//Otherwise when removing it will skip one gotchi
+                    Debug.WriteLine("ded");
+                    continue;
                 }
             }
             

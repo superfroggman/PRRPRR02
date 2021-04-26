@@ -7,5 +7,7 @@ namespace Slutprojekt
     interface IGotchi
     {
         string name { get; }
+
+        public bool UpdateStatuses(int value);
     }
 }

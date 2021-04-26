@@ -12,5 +12,10 @@ namespace Slutprojekt
         {
             this.name = name;
         }
+
+        public bool UpdateStatuses()
+        {
+            return false;
+        }
     }
 }

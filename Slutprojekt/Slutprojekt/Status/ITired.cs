@@ -6,6 +6,7 @@ namespace Slutprojekt
 {
     interface ITired : ITiredness
     {
+        int maxTiredness { get; set; }
 
         public bool ChangeTiredness(int value);
     }

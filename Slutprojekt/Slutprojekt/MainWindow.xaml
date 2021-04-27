@@ -18,13 +18,21 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
+        <!--Top menu-->
+        <!--TODO: do this programatically-->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button>
+            <Button Grid.Column="0">
+                <Image Source="GFX/git.png"/>
+            </Button>
+            <Button Grid.Column="1">
+                <Image Source="GFX/git.png"/>
+            </Button>
+            <Button Grid.Column="2">
                 <Image Source="GFX/git.png"/>
             </Button>
         </Grid>

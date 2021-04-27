@@ -13,7 +13,7 @@ namespace Slutprojekt
             this.name = name;
         }
 
-        public bool UpdateStatuses()
+        public bool UpdateStatuses(int value)
         {
             return false;
         }

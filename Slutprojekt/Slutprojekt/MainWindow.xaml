@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Slutprojekt"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid x:Name="mainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition/>
@@ -20,12 +20,13 @@
 
         <!--Top menu-->
         <!--TODO: do this programatically-->
-        <Grid>
+        <Grid x:Name="gotchiButtonGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            <!--
             <Button Grid.Column="0">
                 <Image Source="GFX/git.png"/>
             </Button>
@@ -35,6 +36,7 @@
             <Button Grid.Column="2">
                 <Image Source="GFX/git.png"/>
             </Button>
+            -->
         </Grid>
     </Grid>
 </Window>

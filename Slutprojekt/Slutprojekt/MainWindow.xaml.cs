@@ -32,13 +32,21 @@ namespace Slutprojekt
             InitializeComponent();
 
             gotchis.Add(new Dog("cool"));
+
             gotchis.Add(new Fishy("cat"));
+
+            //Adding button programatically
+            //TODO: add images, and more than 1 button
+            var gotchiButton = new GotchiButton("GFX/git.png");
+            var button = new Button();
+            button.SetValue(Grid.ColumnProperty, 0);
+            gotchiButtonGrid.Children.Add(button);
+
 
             //https://www.c-sharpcorner.com/blogs/digital-clock-in-wpf1
             Timer.Tick += new EventHandler(OnTimeStep);
             Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             Timer.Start();
-
         }
 
         private void OnTimeStep(object sender, EventArgs e)

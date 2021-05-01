@@ -38,5 +38,21 @@
             </Button>
             -->
         </Grid>
+        <Grid Grid.Row="1" Grid.Column="1" x:Name="statusButtonGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+        </Grid>
+
+        <Grid Grid.Row="2" Grid.Column="0" x:Name="statusBarGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+        </Grid>
+
     </Grid>
 </Window>

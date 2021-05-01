@@ -38,9 +38,6 @@ namespace Slutprojekt
             gotchis.Add(new Fishy("fish"));
             gotchiButtons.Add(new GotchiButton("fish1"));
 
-
-
-
             for(int i = 0; i<gotchiButtons.Count; i++)
             {
                 var gotchiButton = gotchiButtons[i];

@@ -24,6 +24,7 @@ namespace Slutprojekt
     {
 
         List<IGotchi> gotchis = new List<IGotchi>();
+        List<GotchiButton> gotchiButtons = new List<GotchiButton>();
 
         DispatcherTimer Timer = new DispatcherTimer();
 
@@ -31,17 +32,26 @@ namespace Slutprojekt
         {
             InitializeComponent();
 
-            gotchis.Add(new Dog("cool"));
+            gotchis.Add(new Dog("dog"));
+            gotchiButtons.Add(new GotchiButton("dog1"));
 
-            gotchis.Add(new Fishy("cat"));
+            gotchis.Add(new Fishy("fish"));
+            gotchiButtons.Add(new GotchiButton("fish1"));
 
-            //Adding button programatically
-            //TODO: add images, and more than 1 button
-            var gotchiButton = new GotchiButton("GFX/git.png");
-            var button = new Button();
-            button.SetValue(Grid.ColumnProperty, 0);
-            gotchiButtonGrid.Children.Add(button);
 
+
+
+            for(int i = 0; i<gotchiButtons.Count; i++)
+            {
+                var gotchiButton = gotchiButtons[i];
+                var button = new Button();
+
+                button.Content = gotchiButton.iconLocation;
+                button.SetValue(Grid.ColumnProperty, i);
+
+                gotchiButtonGrid.Children.Add(button);
+
+            }
 
             //https://www.c-sharpcorner.com/blogs/digital-clock-in-wpf1
             Timer.Tick += new EventHandler(OnTimeStep);
@@ -51,8 +61,6 @@ namespace Slutprojekt
 
         private void OnTimeStep(object sender, EventArgs e)
         {
-           
-
             for (int i = 0; i < gotchis.Count; i++)
             {
                 if (gotchis[i].UpdateStatuses(1))

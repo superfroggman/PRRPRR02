@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Slutprojekt
 {
-    class Dog : IGotchi, ITired
+    class Dog : IGotchi, ITiredness
     {
-        public int maxTiredness { get; set; } = 100;
+        public int maxStatus { get; set; } = 100;
 
         public string name { get; private set; } = "Gotchi";
         public int tiredness { get; set; } = 0;
@@ -18,13 +18,24 @@ namespace Slutprojekt
 
         public bool UpdateStatuses(int value)
         {
-            return ChangeTiredness(value);
+            bool die = false;
+
+            tiredness += value;
+            die |= CheckValue(tiredness);
+
+            return die;
         }
 
-        public bool ChangeTiredness(int value)
+        public List<int> GetStatuses()
         {
-            tiredness += value;
-            return (tiredness > maxTiredness || tiredness < 0);
+            List<int> list = new List<int>();
+            list.Add(tiredness);
+            return list;
+        }
+
+        private bool CheckValue(int value)
+        {
+            return (value > maxStatus || value < 0);
         }
     }
 }

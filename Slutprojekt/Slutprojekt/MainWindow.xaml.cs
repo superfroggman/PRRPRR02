@@ -25,6 +25,7 @@ namespace Slutprojekt
 
         List<IGotchi> gotchis = new List<IGotchi>();
         List<GotchiButton> gotchiButtons = new List<GotchiButton>();
+        int selectedIndex = 0;
 
         DispatcherTimer Timer = new DispatcherTimer();
 
@@ -38,6 +39,7 @@ namespace Slutprojekt
             gotchis.Add(new Fishy("fish"));
             gotchiButtons.Add(new GotchiButton("fish1"));
 
+            //TODO: add images to buttons
             for(int i = 0; i<gotchiButtons.Count; i++)
             {
                 var gotchiButton = gotchiButtons[i];
@@ -45,6 +47,7 @@ namespace Slutprojekt
 
                 button.Content = gotchiButton.iconLocation;
                 button.SetValue(Grid.ColumnProperty, i);
+                button.Click += new RoutedEventHandler(OnStatusButtonClicked);
 
                 gotchiButtonGrid.Children.Add(button);
 
@@ -68,7 +71,37 @@ namespace Slutprojekt
                     continue;
                 }
             }
-            
+
+            UpdateGUI();
+        }
+
+        private void UpdateGUI()
+        {
+            currentGotchiText.Text = gotchis[selectedIndex].name;
+
+            for (int i = 0; i < gotchis[selectedIndex].GetStatuses().Count; i++)
+            {
+                ProgressBar bar = new ProgressBar();
+                bar.SetValue(Grid.RowProperty, i);
+                bar.Value = gotchis[i].GetStatuses()[i];
+
+                statusBarGrid.Children.Add(bar);
+            }
+        }
+
+        private void OnStatusButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is Button button)
+            {
+                int index = (int)button.GetValue(Grid.ColumnProperty); //TODO: make better way of finding out index
+
+                selectedIndex = index;
+
+                statusBarGrid.Children.Clear();
+
+
+                UpdateGUI();
+            }
         }
     }
 }

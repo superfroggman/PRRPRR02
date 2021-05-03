@@ -17,5 +17,10 @@ namespace Slutprojekt
         {
             return false;
         }
+
+        public List<int> GetStatuses()
+        {
+            return new List<int>();
+        }
     }
 }

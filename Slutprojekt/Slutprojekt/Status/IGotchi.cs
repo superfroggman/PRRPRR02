@@ -9,5 +9,7 @@ namespace Slutprojekt
         string name { get; }
 
         public bool UpdateStatuses(int value);
+
+        public List<int> GetStatuses();
     }
 }

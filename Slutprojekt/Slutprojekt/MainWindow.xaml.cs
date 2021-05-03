@@ -47,10 +47,9 @@ namespace Slutprojekt
 
                 button.Content = gotchiButton.iconLocation;
                 button.SetValue(Grid.ColumnProperty, i);
-                button.Click += new RoutedEventHandler(OnStatusButtonClicked);
+                button.Click += new RoutedEventHandler(OnGotchiButtonClicked);
 
                 gotchiButtonGrid.Children.Add(button);
-
             }
 
             //https://www.c-sharpcorner.com/blogs/digital-clock-in-wpf1
@@ -77,8 +76,25 @@ namespace Slutprojekt
 
         private void UpdateGUI()
         {
+            //Update gotchi text
             currentGotchiText.Text = gotchis[selectedIndex].name;
 
+            //Add relevant status buttons
+            statusButtonGrid.Children.Clear();
+            List<int> statuses = gotchis[selectedIndex].GetStatuses();
+            for (int i = 0; i < statuses.Count; i++)
+            {
+                var button = new Button();
+
+                button.Content = statuses[i];
+                button.SetValue(Grid.RowProperty, i);
+                button.Click += new RoutedEventHandler(OnGotchiButtonClicked);
+
+                statusButtonGrid.Children.Add(button);
+            }
+
+            //Add correct and updated progress bars
+            statusBarGrid.Children.Clear();
             for (int i = 0; i < gotchis[selectedIndex].GetStatuses().Count; i++)
             {
                 ProgressBar bar = new ProgressBar();
@@ -89,18 +105,21 @@ namespace Slutprojekt
             }
         }
 
-        private void OnStatusButtonClicked(object sender, RoutedEventArgs e)
+        private void OnGotchiButtonClicked(object sender, RoutedEventArgs e)
         {
             if (e.OriginalSource is Button button)
             {
                 int index = (int)button.GetValue(Grid.ColumnProperty); //TODO: make better way of finding out index
 
                 selectedIndex = index;
+            }
+        }
 
-                statusBarGrid.Children.Clear();
+        private void OnStatusButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is Button button)
+            {
 
-
-                UpdateGUI();
             }
         }
     }

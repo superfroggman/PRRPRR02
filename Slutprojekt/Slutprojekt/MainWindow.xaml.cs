@@ -88,7 +88,7 @@ namespace Slutprojekt
 
                 button.Content = statuses[i];
                 button.SetValue(Grid.RowProperty, i);
-                button.Click += new RoutedEventHandler(OnGotchiButtonClicked);
+                button.Click += new RoutedEventHandler(OnStatusButtonClicked);
 
                 statusButtonGrid.Children.Add(button);
             }
@@ -119,7 +119,9 @@ namespace Slutprojekt
         {
             if (e.OriginalSource is Button button)
             {
-
+                int index = (int)button.GetValue(Grid.ColumnProperty); //TODO: make better way of finding out index
+                Debug.WriteLine(index);
+                gotchis[selectedIndex].UpdateStatuses(-20);
             }
         }
     }

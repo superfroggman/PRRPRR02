@@ -6,4 +6,12 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="git.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="git.png" />
+  </ItemGroup>
+
 </Project>

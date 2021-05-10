@@ -40,17 +40,8 @@ namespace Slutprojekt
             gotchiButtons.Add(new GotchiButton("fish1"));
 
             //TODO: add images to buttons
-            for(int i = 0; i<gotchiButtons.Count; i++)
-            {
-                var gotchiButton = gotchiButtons[i];
-                var button = new Button();
-
-                button.Content = gotchiButton.iconLocation;
-                button.SetValue(Grid.ColumnProperty, i);
-                button.Click += new RoutedEventHandler(OnGotchiButtonClicked);
-
-                gotchiButtonGrid.Children.Add(button);
-            }
+            AddGotchiButtons();
+            AddStatusButtons();
 
             //https://www.c-sharpcorner.com/blogs/digital-clock-in-wpf1
             Timer.Tick += new EventHandler(OnTimeStep);
@@ -65,8 +56,12 @@ namespace Slutprojekt
                 if (gotchis[i].UpdateStatuses(1))
                 {
                     gotchis.RemoveAt(i);
+                    gotchiButtons.RemoveAt(i);
+                    AddGotchiButtons();
+                    AddStatusButtons();
                     i--;//Otherwise when removing it will skip one gotchi
                     Debug.WriteLine("ded");
+                    UpdateGUI();
                     continue;
                 }
             }
@@ -78,20 +73,6 @@ namespace Slutprojekt
         {
             //Update gotchi text
             currentGotchiText.Text = gotchis[selectedIndex].name;
-
-            //Add relevant status buttons
-            statusButtonGrid.Children.Clear();
-            List<int> statuses = gotchis[selectedIndex].GetStatuses();
-            for (int i = 0; i < statuses.Count; i++)
-            {
-                var button = new Button();
-
-                button.Content = statuses[i];
-                button.SetValue(Grid.RowProperty, i);
-                button.Click += new RoutedEventHandler(OnStatusButtonClicked);
-
-                statusButtonGrid.Children.Add(button);
-            }
 
             //Add correct and updated progress bars
             statusBarGrid.Children.Clear();
@@ -105,6 +86,56 @@ namespace Slutprojekt
             }
         }
 
+        private void AddStatusButtons()
+        {
+            //Add relevant status buttons
+            statusButtonGrid.Children.Clear();
+            List<int> statuses = gotchis[selectedIndex].GetStatuses();
+            for (int i = 0; i < statuses.Count; i++)
+            {
+                var button = new Button();
+
+                button.Content = statuses[i];
+                button.SetValue(Grid.RowProperty, i);
+                button.Click += new RoutedEventHandler(OnStatusButtonClicked);
+
+                statusButtonGrid.Children.Add(button);
+            }
+        }
+
+        private void AddGotchiButtons()
+        {
+            gotchiButtonGrid.Children.Clear();
+            for (int i = 0; i < gotchiButtons.Count; i++)
+            {
+                var gotchiButton = gotchiButtons[i];
+                var button = new Button();
+
+                button.Content = gotchiButton.iconLocation;
+                button.SetValue(Grid.ColumnProperty, i);
+                button.Click += new RoutedEventHandler(OnGotchiButtonClicked);
+
+                Image myImage3 = new Image();
+                myImage3.Source = CreateImageSource("git.png");
+                button.Content = myImage3;
+
+                gotchiButtonGrid.Children.Add(button);
+            }
+
+        }
+
+        //se till att lägga till bilden via hjälparen i xaml för att den ska läggas till
+        private BitmapImage CreateImageSource(string uri)
+        {
+            //https://docs.microsoft.com/en-us/dotnet/api/system.windows.controls.image.source?view=net-5.0
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri(uri, UriKind.Relative);
+            bi3.EndInit();
+
+            return bi3;
+        }
+
         private void OnGotchiButtonClicked(object sender, RoutedEventArgs e)
         {
             if (e.OriginalSource is Button button)
@@ -112,6 +143,8 @@ namespace Slutprojekt
                 int index = (int)button.GetValue(Grid.ColumnProperty); //TODO: make better way of finding out index
 
                 selectedIndex = index;
+
+                AddStatusButtons();
             }
         }
 

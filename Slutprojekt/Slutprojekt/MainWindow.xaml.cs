@@ -115,25 +115,23 @@ namespace Slutprojekt
                 button.SetValue(Grid.ColumnProperty, i);
                 button.Click += new RoutedEventHandler(OnGotchiButtonClicked);
 
-                Image myImage3 = new Image();
-                myImage3.Source = CreateImageSource("GFX/git.png");
-                button.Content = myImage3;
+                Image myImage = new Image();
+                myImage.Source = CreateImageSource("GFX/git.png");
+                button.Content = myImage;
 
                 gotchiButtonGrid.Children.Add(button);
             }
-
         }
 
-        //se till att lägga till bilden via hjälparen i xaml för att den ska läggas till
         private BitmapImage CreateImageSource(string uri)
         {
             //https://docs.microsoft.com/en-us/dotnet/api/system.windows.controls.image.source?view=net-5.0
-            BitmapImage bi3 = new BitmapImage();
-            bi3.BeginInit();
-            bi3.UriSource = new Uri(uri, UriKind.Relative);
-            bi3.EndInit();
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.UriSource = new Uri(uri, UriKind.Relative);
+            bitmapImage.EndInit();
 
-            return bi3;
+            return bitmapImage;
         }
 
         private void OnGotchiButtonClicked(object sender, RoutedEventArgs e)

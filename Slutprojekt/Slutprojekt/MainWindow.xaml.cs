@@ -116,7 +116,7 @@ namespace Slutprojekt
                 button.Click += new RoutedEventHandler(OnGotchiButtonClicked);
 
                 Image myImage3 = new Image();
-                myImage3.Source = CreateImageSource("git.png");
+                myImage3.Source = CreateImageSource("GFX/git.png");
                 button.Content = myImage3;
 
                 gotchiButtonGrid.Children.Add(button);

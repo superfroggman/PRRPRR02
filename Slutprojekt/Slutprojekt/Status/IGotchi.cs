@@ -8,6 +8,8 @@ namespace Slutprojekt
     {
         string name { get; }
 
+        string iconLocation { get; }
+
         public bool UpdateStatuses(int value);
 
         public List<int> GetStatuses();

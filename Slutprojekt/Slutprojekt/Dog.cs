@@ -8,7 +8,9 @@ namespace Slutprojekt
     {
         public int maxStatus { get; set; } = 100;
 
-        public string name { get; private set; } = "Gotchi";
+        public string name { get; private set; } = "Doggo";
+
+        public string iconLocation { get; } = "GFX/dog.png";
         public int tiredness { get; set; } = 0;
 
         public Dog(string name)

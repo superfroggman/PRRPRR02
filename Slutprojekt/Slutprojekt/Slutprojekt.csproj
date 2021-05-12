@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="GFX\dog.png" />
     <None Remove="git.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="GFX\dog.png" />
     <Resource Include="GFX\git.png" />
   </ItemGroup>
 

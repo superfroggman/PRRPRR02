@@ -8,6 +8,9 @@ namespace Slutprojekt
     {
         public string name { get; private set; } = "Fishy";
 
+        public string iconLocation { get; } = "GFX/git.png";
+
+
         public Fishy(string name)
         {
             this.name = name;

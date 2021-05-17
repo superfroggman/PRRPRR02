@@ -18,9 +18,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="1">
-            <TextBlock x:Name="currentGotchiText" Text="haa"/>
-        </StackPanel>
+        <Image Grid.Column="0" Grid.Row="1" x:Name="currentGotchiImage" Stretch="UniformToFill"/>
 
         <!--Top menu-->
         <!--TODO: do this programatically-->

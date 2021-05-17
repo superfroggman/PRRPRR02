@@ -11,6 +11,7 @@ namespace Slutprojekt
         public string name { get; private set; } = "Doggo";
 
         public string iconLocation { get; } = "GFX/dog.png";
+
         public int tiredness { get; set; } = 0;
 
         public Dog(string name)

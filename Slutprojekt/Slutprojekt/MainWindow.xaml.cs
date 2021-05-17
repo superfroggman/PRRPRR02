@@ -71,8 +71,8 @@ namespace Slutprojekt
 
         private void UpdateGUI()
         {
-            //Update gotchi text
-            currentGotchiText.Text = gotchis[selectedIndex].name;
+            //Update gotchi image
+            currentGotchiImage.Source = CreateImageSource(gotchis[selectedIndex].iconLocation);
 
             //Add correct and updated progress bars
             statusBarGrid.Children.Clear();

@@ -57,11 +57,13 @@ namespace Slutprojekt
                 {
                     gotchis.RemoveAt(i);
                     gotchiButtons.RemoveAt(i);
+
+                    if (gotchis.Count <= 0) return;
+
+                    UpdateGUI();
                     AddGotchiButtons();
                     AddStatusButtons();
                     i--;//Otherwise when removing it will skip one gotchi
-                    Debug.WriteLine("ded");
-                    UpdateGUI();
                     continue;
                 }
             }
@@ -71,6 +73,14 @@ namespace Slutprojekt
 
         private void UpdateGUI()
         {
+            if (gotchis.Count <= 0) return;
+
+            //If gotchi dies selected wont be out of range
+            if (selectedIndex > gotchis.Count-1)
+            {
+                selectedIndex = gotchis.Count-1;
+            }
+
             //Update gotchi image
             currentGotchiImage.Source = CreateImageSource(gotchis[selectedIndex].iconLocation);
 
@@ -80,7 +90,7 @@ namespace Slutprojekt
             {
                 ProgressBar bar = new ProgressBar();
                 bar.SetValue(Grid.RowProperty, i);
-                bar.Value = gotchis[i].GetStatuses()[i];
+                bar.Value = ((double)gotchis[selectedIndex].GetStatuses()[i] / (double)gotchis[selectedIndex].maxStatus) * 100;
 
                 statusBarGrid.Children.Add(bar);
             }
@@ -95,7 +105,7 @@ namespace Slutprojekt
             {
                 var button = new Button();
 
-                button.Content = statuses[i];
+                button.Content = i;
                 button.SetValue(Grid.RowProperty, i);
                 button.Click += new RoutedEventHandler(OnStatusButtonClicked);
 
@@ -138,7 +148,7 @@ namespace Slutprojekt
         {
             if (e.OriginalSource is Button button)
             {
-                int index = (int)button.GetValue(Grid.ColumnProperty); //TODO: make better way of finding out index
+                int index = (int)button.GetValue(Grid.ColumnProperty);
 
                 selectedIndex = index;
 
@@ -150,9 +160,9 @@ namespace Slutprojekt
         {
             if (e.OriginalSource is Button button)
             {
-                int index = (int)button.GetValue(Grid.ColumnProperty); //TODO: make better way of finding out index
-                Debug.WriteLine(index);
-                gotchis[selectedIndex].UpdateStatuses(-20);
+                int index = (int)button.GetValue(Grid.RowProperty);
+
+                gotchis[selectedIndex].UpdateStatus(-20, index);
             }
         }
     }

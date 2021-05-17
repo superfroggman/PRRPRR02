@@ -7,5 +7,7 @@ namespace Slutprojekt
     interface ITiredness
     {
         public int tiredness { get; }
+
+        public bool UpdateTiredness(int value);
     }
 }

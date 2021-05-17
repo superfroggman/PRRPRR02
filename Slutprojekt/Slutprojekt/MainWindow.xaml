@@ -10,7 +10,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition/>
-            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -18,7 +17,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Image Grid.Column="0" Grid.Row="1" x:Name="currentGotchiImage" Stretch="UniformToFill"/>
+        <Image Grid.Column="0" Grid.Row="1" x:Name="currentGotchiImage" Stretch="Fill"/>
 
         <!--Top menu-->
         <!--TODO: do this programatically-->

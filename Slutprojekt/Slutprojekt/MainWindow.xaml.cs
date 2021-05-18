@@ -88,6 +88,9 @@ namespace Slutprojekt
             AddStatusButtons();
         }
 
+
+
+        //Updating User Interface
         private void UpdateGUI()
         {
             statusBarGrid.Children.Clear();
@@ -108,7 +111,6 @@ namespace Slutprojekt
             //Update gotchi image
             currentGotchiImage.Source = CreateImageSource(gotchis[selectedIndex].iconLocation);
         }
-
         private void AddStatusButtons()
         {
             statusButtonGrid.Children.Clear();
@@ -128,7 +130,6 @@ namespace Slutprojekt
                 statusButtonGrid.Children.Add(button);
             }
         }
-
         private void AddGotchiButtons()
         {
             gotchiButtonGrid.Children.Clear();
@@ -152,17 +153,9 @@ namespace Slutprojekt
             }
         }
 
-        private BitmapImage CreateImageSource(string uri)
-        {
-            //https://docs.microsoft.com/en-us/dotnet/api/system.windows.controls.image.source?view=net-5.0
-            BitmapImage bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.UriSource = new Uri(uri, UriKind.Relative);
-            bitmapImage.EndInit();
 
-            return bitmapImage;
-        }
 
+        //Button events
         private void OnGotchiButtonClicked(object sender, RoutedEventArgs e)
         {
             if (e.OriginalSource is Button button)
@@ -174,7 +167,6 @@ namespace Slutprojekt
                 AddStatusButtons();
             }
         }
-
         private void OnStatusButtonClicked(object sender, RoutedEventArgs e)
         {
             if (e.OriginalSource is Button button)
@@ -183,6 +175,20 @@ namespace Slutprojekt
 
                 gotchis[selectedIndex].UpdateStatus(-20, index);
             }
+        }
+
+
+
+        //Utils
+        private BitmapImage CreateImageSource(string uri)
+        {
+            //https://docs.microsoft.com/en-us/dotnet/api/system.windows.controls.image.source?view=net-5.0
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.UriSource = new Uri(uri, UriKind.Relative);
+            bitmapImage.EndInit();
+
+            return bitmapImage;
         }
     }
 }

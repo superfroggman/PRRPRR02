@@ -25,7 +25,6 @@ namespace Slutprojekt
         bool debug = false; //Enable to prevent gotchis dying
 
         List<IGotchi> gotchis = new List<IGotchi>();
-        List<GotchiButton> gotchiButtons = new List<GotchiButton>();
         int selectedIndex = 0;
 
         DispatcherTimer Timer = new DispatcherTimer();
@@ -36,10 +35,8 @@ namespace Slutprojekt
 
             //Add gotchis and buttons
             gotchis.Add(new Dog("dog"));
-            gotchiButtons.Add(new GotchiButton("dog1"));
 
             gotchis.Add(new Fish("fish"));
-            gotchiButtons.Add(new GotchiButton("fish1"));
 
             AddGotchiButtons();
             AddStatusButtons();
@@ -76,7 +73,6 @@ namespace Slutprojekt
         private void HandleDeath(int index)
         {
             gotchis.RemoveAt(index);
-            gotchiButtons.RemoveAt(index);
 
             if (selectedIndex > gotchis.Count - 1)
             {
@@ -136,12 +132,11 @@ namespace Slutprojekt
 
             if (gotchis.Count == 0) return;
 
-            for (int i = 0; i < gotchiButtons.Count; i++)
+            for (int i = 0; i < gotchis.Count; i++)
             {
-                var gotchiButton = gotchiButtons[i];
+                var gotchi = gotchis[i];
                 var button = new Button();
 
-                button.Content = gotchiButton.iconLocation;
                 button.SetValue(Grid.ColumnProperty, i);
                 button.Click += new RoutedEventHandler(OnGotchiButtonClicked);
 

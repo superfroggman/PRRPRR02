@@ -22,7 +22,7 @@ namespace Slutprojekt
     /// </summary>
     public partial class MainWindow : Window
     {
-        bool debug = false;
+        bool debug = false; //Enable to prevent gotchis dying
 
         List<IGotchi> gotchis = new List<IGotchi>();
         List<GotchiButton> gotchiButtons = new List<GotchiButton>();
@@ -34,13 +34,13 @@ namespace Slutprojekt
         {
             InitializeComponent();
 
+            //Add gotchis and buttons
             gotchis.Add(new Dog("dog"));
             gotchiButtons.Add(new GotchiButton("dog1"));
 
             gotchis.Add(new Fish("fish"));
             gotchiButtons.Add(new GotchiButton("fish1"));
 
-            //TODO: add images to buttons
             AddGotchiButtons();
             AddStatusButtons();
 
@@ -182,6 +182,7 @@ namespace Slutprojekt
         //Utils
         private BitmapImage CreateImageSource(string uri)
         {
+            //Don't ask me why I do this. 
             //https://docs.microsoft.com/en-us/dotnet/api/system.windows.controls.image.source?view=net-5.0
             BitmapImage bitmapImage = new BitmapImage();
             bitmapImage.BeginInit();

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Slutprojekt
 {
-    class Fishy : IGotchi, ITiredness, IHunger
+    class Fish : IGotchi, ITiredness, IHunger
     {
         public int maxStatus { get; set; } = 150;
         public string name { get; private set; } = "Fishy";
@@ -36,7 +36,7 @@ namespace Slutprojekt
             return list;
         }
 
-        public Fishy(string name)
+        public Fish(string name)
         {
             this.name = name;
         }

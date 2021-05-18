@@ -37,7 +37,7 @@ namespace Slutprojekt
             gotchis.Add(new Dog("dog"));
             gotchiButtons.Add(new GotchiButton("dog1"));
 
-            gotchis.Add(new Fishy("fish"));
+            gotchis.Add(new Fish("fish"));
             gotchiButtons.Add(new GotchiButton("fish1"));
 
             //TODO: add images to buttons

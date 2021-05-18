@@ -22,6 +22,7 @@ namespace Slutprojekt
     /// </summary>
     public partial class MainWindow : Window
     {
+        bool debug = false;
 
         List<IGotchi> gotchis = new List<IGotchi>();
         List<GotchiButton> gotchiButtons = new List<GotchiButton>();
@@ -55,14 +56,15 @@ namespace Slutprojekt
             {
                 if (gotchis[i].UpdateStatuses(1))
                 {
-                    gotchis.RemoveAt(i);
-                    gotchiButtons.RemoveAt(i);
+                    if (debug)
+                    {
+                        gotchis[i].UpdateStatuses(-5);
+                    }
+                    else
+                    {
+                        HandleDeath(i);
+                    }
 
-                    if (gotchis.Count <= 0) return;
-
-                    UpdateGUI();
-                    AddGotchiButtons();
-                    AddStatusButtons();
                     i--;//Otherwise when removing it will skip one gotchi
                     continue;
                 }
@@ -71,21 +73,29 @@ namespace Slutprojekt
             UpdateGUI();
         }
 
-        private void UpdateGUI()
+        private void HandleDeath(int index)
         {
-            if (gotchis.Count <= 0) return;
+            gotchis.RemoveAt(index);
+            gotchiButtons.RemoveAt(index);
 
-            //If gotchi dies selected wont be out of range
-            if (selectedIndex > gotchis.Count-1)
+            if (selectedIndex > gotchis.Count - 1)
             {
-                selectedIndex = gotchis.Count-1;
+                selectedIndex = gotchis.Count - 1;
             }
 
-            //Update gotchi image
-            currentGotchiImage.Source = CreateImageSource(gotchis[selectedIndex].iconLocation);
+            UpdateGUI();
+            AddGotchiButtons();
+            AddStatusButtons();
+        }
+
+        private void UpdateGUI()
+        {
+            statusBarGrid.Children.Clear();
+            currentGotchiImage.Source = null;
+
+            if (gotchis.Count == 0) return;
 
             //Add correct and updated progress bars
-            statusBarGrid.Children.Clear();
             for (int i = 0; i < gotchis[selectedIndex].GetStatuses().Count; i++)
             {
                 ProgressBar bar = new ProgressBar();
@@ -94,12 +104,18 @@ namespace Slutprojekt
 
                 statusBarGrid.Children.Add(bar);
             }
+
+            //Update gotchi image
+            currentGotchiImage.Source = CreateImageSource(gotchis[selectedIndex].iconLocation);
         }
 
         private void AddStatusButtons()
         {
-            //Add relevant status buttons
             statusButtonGrid.Children.Clear();
+
+            if (gotchis.Count == 0) return;
+
+            //Add relevant status buttons
             List<int> statuses = gotchis[selectedIndex].GetStatuses();
             for (int i = 0; i < statuses.Count; i++)
             {
@@ -116,6 +132,9 @@ namespace Slutprojekt
         private void AddGotchiButtons()
         {
             gotchiButtonGrid.Children.Clear();
+
+            if (gotchis.Count == 0) return;
+
             for (int i = 0; i < gotchiButtons.Count; i++)
             {
                 var gotchiButton = gotchiButtons[i];

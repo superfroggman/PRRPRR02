@@ -119,7 +119,6 @@ namespace Slutprojekt
             {
                 var button = new Button();
 
-                button.Content = i;
                 button.SetValue(Grid.RowProperty, i);
                 button.Click += new RoutedEventHandler(OnStatusButtonClicked);
 
